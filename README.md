@@ -571,6 +571,7 @@ itdb/
 
 | 版本 | 发布日期 | 更新日志 |
 | --- | --- | --- |
+| v1.4.2 | 2026-10-22 | [verchanglog/v1.4.2.md](verchanglog/v1.4.2.md) |
 | v1.4.1 | 2026-09-24 | [verchanglog/v1.4.1.md](verchanglog/v1.4.1.md) |
 | v1.4.0 | 2026-09-24 | [verchanglog/v1.4.0.md](verchanglog/v1.4.0.md) |
 | v1.3.7 | 2026-09-23 | [verchanglog/v1.3.7.md](verchanglog/v1.3.7.md) |
