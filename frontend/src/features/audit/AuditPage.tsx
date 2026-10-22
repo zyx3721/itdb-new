@@ -74,7 +74,7 @@ export function AuditPage() {
   const canManageAudit = userHasPermission(getStoredUser(), PERM.auditManage);
   const query = useQuery({
     queryKey: ['itdb', 'audits'],
-    queryFn: () => api<AuditHistoryResponse>('/api/history?limit=500'),
+    queryFn: () => api<AuditHistoryResponse>('/api/history'),
   });
   const [search, setSearch] = useState('');
   const [module, setModule] = useState('all');

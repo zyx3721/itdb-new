@@ -454,8 +454,8 @@ definitions:
           $ref: '#/definitions/router.swaggerAuditHistoryItem'
         type: array
       limit:
-        description: 返回条数上限
-        example: 500
+        description: 返回条数上限，-1 表示不限制
+        example: -1
         type: integer
       total:
         description: 总数
@@ -2269,7 +2269,7 @@ paths:
     get:
       description: 获取审计日志；导入类事件的目标仅返回前两个名称，完整清单通过 targetTitle 返回供悬浮提示
       parameters:
-      - description: 返回条数（默认 500，最大 2000）
+      - description: 返回条数（默认返回全部保留记录；传 -1 表示不限制，不设上限）
         in: query
         name: limit
         type: integer

@@ -191,7 +191,7 @@ data/
 | --- | --- | --- |
 | `ITDB_JWT_SECRET` | 空 | JWT 签名密钥；留空则首次启动自动生成随机密钥并持久化到数据库，建议显式设置 |
 | `ITDB_SESSION_TTL_HOURS` | `12` | 登录会话（JWT）有效期，单位小时，正整数 |
-| `ITDB_HISTORY_LIMIT` | `1000` | 操作历史保留条数 |
+| `ITDB_HISTORY_LIMIT` | `1000` | 操作历史保留条数；仅控制历史表保留数量，不限制审计日志接口返回条数 |
 | `ITDB_CORS_ORIGINS` | `*` | 允许的跨域来源，多个用逗号分隔 |
 | `ITDB_SERVER_ADDR` | `127.0.0.1:8080` | 后端监听地址，容器内由 Nginx 反代，保持默认即可 |
 | `ITDB_DB_PATH` | `data/itdb.db` | SQLite 数据库路径，相对容器内 `/app` 目录 |
@@ -297,7 +297,7 @@ vim .env               # 至少设置 ITDB_JWT_SECRET
 | `-db` | `ITDB_DB_PATH` | SQLite 数据库路径 |
 | `-upload-dir` | `ITDB_UPLOAD_DIR` | 上传文件存储目录 |
 | `-jwt-secret` | `ITDB_JWT_SECRET` | JWT 签名密钥 |
-| `-history-limit` | `ITDB_HISTORY_LIMIT` | 操作历史保留条数 |
+| `-history-limit` | `ITDB_HISTORY_LIMIT` | 操作历史保留条数；仅控制历史表保留数量，不限制审计日志接口返回条数 |
 | `-session-ttl` | `ITDB_SESSION_TTL_HOURS` | 登录会话有效期（小时） |
 | `-cors-origins` | `ITDB_CORS_ORIGINS` | 允许的跨域来源，多个用逗号分隔 |
 | `-env` | 无 | 指定 `.env` 配置文件路径 |

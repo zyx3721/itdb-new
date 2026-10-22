@@ -176,7 +176,7 @@ func swaggerDashboardSummary() {}
 // @Summary 获取审计日志
 // @Tags 审计日志
 // @Produce json
-// @Param limit query int false "返回条数（默认 500，最大 2000）"
+// @Param limit query int false "返回条数（默认返回全部保留记录；传 -1 表示不限制，不设上限）"
 // @Success 200 {object} swaggerAuditHistoryResponse
 // @Description 获取审计日志；导入类事件的目标仅返回前两个名称，完整清单通过 targetTitle 返回供悬浮提示
 // @Security BearerAuth

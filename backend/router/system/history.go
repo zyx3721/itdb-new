@@ -25,13 +25,7 @@ type auditHistoryItem struct {
 // handleHistory 返回结构化审计日志；导入类事件的目标为全部名称清单，
 // 响应中 target 仅保留前两个名称，完整内容随 targetTitle 返回供悬浮提示
 func (a *Router) handleHistory(w http.ResponseWriter, r *http.Request) {
-	limit := primitives.IntParamDefault(r.URL.Query().Get("limit"), 500)
-	if limit <= 0 {
-		limit = 500
-	}
-	if limit > 2000 {
-		limit = 2000
-	}
+	limit := primitives.ListLimitParam(r.URL.Query().Get("limit"), -1)
 
 	var total int64
 	if err := a.domains.System.QueryRow(`SELECT COUNT(*) FROM history`).Scan(&total); err != nil {
@@ -39,7 +33,13 @@ func (a *Router) handleHistory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := a.fetchRows(`SELECT id, date, authuser, ip, sql, module, action, target, detail, result FROM history ORDER BY id DESC LIMIT ?`, limit)
+	query := `SELECT id, date, authuser, ip, sql, module, action, target, detail, result FROM history ORDER BY id DESC`
+	args := []interface{}{}
+	if limit >= 0 {
+		query += ` LIMIT ?`
+		args = append(args, limit)
+	}
+	rows, err := a.fetchRows(query, args...)
 	if err != nil {
 		common.WriteError(w, http.StatusInternalServerError, err.Error())
 		return

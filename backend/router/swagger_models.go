@@ -71,8 +71,8 @@ type swaggerAuditHistoryResponse struct {
 	Items []swaggerAuditHistoryItem `json:"items"`
 	// 总数
 	Total int64 `json:"total" example:"78"`
-	// 返回条数上限
-	Limit int `json:"limit" example:"500"`
+	// 返回条数上限，-1 表示不限制
+	Limit int `json:"limit" example:"-1"`
 }
 
 type swaggerHistoryClearRequest struct {

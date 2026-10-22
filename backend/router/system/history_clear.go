@@ -14,8 +14,6 @@ type historyClearRequest struct {
 	IDs []int64 `json:"ids"`
 }
 
-const historyClearMaxIDs = 2000
-
 // handleHistoryClear 按前端筛选结果批量清空审计日志，删除成功后补记一条清空操作审计
 func (a *Router) handleHistoryClear(w http.ResponseWriter, r *http.Request) {
 	var req historyClearRequest
@@ -50,7 +48,7 @@ func (a *Router) handleHistoryClear(w http.ResponseWriter, r *http.Request) {
 	common.WriteJSON(w, http.StatusOK, map[string]interface{}{"deleted": deleted})
 }
 
-// dedupeHistoryIDs 过滤非法编号并去重，超限时截断以控制请求规模
+// dedupeHistoryIDs 过滤非法编号并去重
 func dedupeHistoryIDs(raw []int64) []int64 {
 	ids := make([]int64, 0, len(raw))
 	seen := make(map[int64]bool, len(raw))
@@ -60,9 +58,6 @@ func dedupeHistoryIDs(raw []int64) []int64 {
 		}
 		seen[id] = true
 		ids = append(ids, id)
-		if len(ids) >= historyClearMaxIDs {
-			break
-		}
 	}
 	return ids
 }

@@ -1820,7 +1820,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "返回条数（默认 500，最大 2000）",
+                        "description": "返回条数（默认返回全部保留记录；传 -1 表示不限制，不设上限）",
                         "name": "limit",
                         "in": "query"
                     }
@@ -5119,9 +5119,9 @@ const docTemplate = `{
                     }
                 },
                 "limit": {
-                    "description": "返回条数上限",
+                    "description": "返回条数上限，-1 表示不限制",
                     "type": "integer",
-                    "example": 500
+                    "example": -1
                 },
                 "total": {
                     "description": "总数",

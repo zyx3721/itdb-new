@@ -170,7 +170,7 @@ ITDB_CORS_ORIGINS=*
 |        `ITDB_UPLOAD_DIR`         |   `data/files`   |                   上传文件存储目录                   |
 |        `ITDB_JWT_SECRET`         | `itdb-change-me` |            JWT 签名密钥，生产环境务必设置            |
 |     `ITDB_SESSION_TTL_HOURS`     |       `12`       |            登录会话（JWT）有效期，单位小时            |
-|       `ITDB_HISTORY_LIMIT`       |      `1000`      |                   操作历史保留条数                   |
+|       `ITDB_HISTORY_LIMIT`       |      `1000`      | 操作历史保留条数；仅控制历史表保留数量，不限制审计日志接口返回条数 |
 |        `ITDB_CORS_ORIGINS`       |       `*`        |            允许的跨域来源，多个用逗号分隔            |
 
 后端同时支持命令行参数，显式传入的参数优先于环境变量与 `.env` 文件；`./itdb -v` 可查看版本信息（版本、commit、构建时间），`./itdb -h` 查看全部参数：
@@ -182,7 +182,7 @@ ITDB_CORS_ORIGINS=*
 |             `-db`             |       `ITDB_DB_PATH`       |                  SQLite 数据库路径                 |
 |         `-upload-dir`         |      `ITDB_UPLOAD_DIR`     |                   上传文件存储目录                 |
 |         `-jwt-secret`         |      `ITDB_JWT_SECRET`     |                    JWT 签名密钥                    |
-|        `-history-limit`       |     `ITDB_HISTORY_LIMIT`   |                   操作历史保留条数                 |
+|        `-history-limit`       |     `ITDB_HISTORY_LIMIT`   | 操作历史保留条数；仅控制历史表保留数量，不限制审计日志接口返回条数 |
 |         `-session-ttl`        |   `ITDB_SESSION_TTL_HOURS` |              登录会话有效期（小时）               |
 |         `-cors-origins`       |      `ITDB_CORS_ORIGINS`   |            允许的跨域来源，多个用逗号分隔         |
 |            `-env`             |             无             |             指定 `.env` 配置文件路径              |
@@ -888,7 +888,7 @@ server {
 
 ### 5.2.12 审计日志
 
-- `GET /api/history` - 获取审计日志：获取审计日志；导入类事件的目标仅返回前两个名称，完整清单通过 targetTitle 返回供悬浮提示
+- `GET /api/history` - 获取审计日志：导入类事件的目标仅返回前两个名称，完整清单通过 targetTitle 返回供悬浮提示；默认返回全部保留记录，`limit` 可选且不设上限（`-1` 等同于不限制）
 - `POST /api/history/clear` - 清空审计日志：按前端筛选结果传入待清空的编号清单批量删除，清空成功后自动补记一条「清空审计日志」审计事件（归属「审计日志」模块，目标为清除条数）；需要审计管理权限
 - `POST /api/history/events` - 上报前端审计事件：前端执行数据导出（资产、字典、统计报表）、硬件维护日志导出、资料字典导入或标签打印后上报审计事件；事件类型白名单校验并按所属资源校验权限
 

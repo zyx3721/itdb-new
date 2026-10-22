@@ -191,7 +191,7 @@ Available environment variables:
 | --- | --- | --- |
 | `ITDB_JWT_SECRET` | empty | JWT signing key; when empty a random key is generated on first start and persisted in the database, so setting it explicitly is recommended |
 | `ITDB_SESSION_TTL_HOURS` | `12` | Login session (JWT) lifetime in hours, positive integer |
-| `ITDB_HISTORY_LIMIT` | `1000` | Audit history retention count |
+| `ITDB_HISTORY_LIMIT` | `1000` | Audit history retention count; only limits rows kept in the history table, not rows returned by the audit log API |
 | `ITDB_CORS_ORIGINS` | `*` | Allowed origins, comma-separated |
 | `ITDB_SERVER_ADDR` | `127.0.0.1:8080` | Backend listen address; Nginx proxies to it inside the container, so leave it at the default |
 | `ITDB_DB_PATH` | `data/itdb.db` | SQLite database path, relative to `/app` inside the container |
@@ -297,7 +297,7 @@ The backend also accepts command-line flags; a flag passed explicitly takes prec
 | `-db` | `ITDB_DB_PATH` | SQLite database path |
 | `-upload-dir` | `ITDB_UPLOAD_DIR` | Upload storage directory |
 | `-jwt-secret` | `ITDB_JWT_SECRET` | JWT signing secret |
-| `-history-limit` | `ITDB_HISTORY_LIMIT` | Operation history retention count |
+| `-history-limit` | `ITDB_HISTORY_LIMIT` | Operation history retention count; only limits rows kept in the history table, not rows returned by the audit log API |
 | `-session-ttl` | `ITDB_SESSION_TTL_HOURS` | Session (JWT) validity in hours |
 | `-cors-origins` | `ITDB_CORS_ORIGINS` | Allowed CORS origins, comma-separated |
 | `-env` | — | Path to a custom `.env` file |
