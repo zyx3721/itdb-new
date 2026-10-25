@@ -164,6 +164,7 @@ npm run dev
 ```bash
 docker run -d \
   --name itdb \
+  --privileged \
   --restart unless-stopped \
   -p 80:80 \
   -e ITDB_JWT_SECRET=请替换为足够随机的长字符串 \

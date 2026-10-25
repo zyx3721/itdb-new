@@ -164,6 +164,7 @@ The image bundles the Go backend, Nginx and the Nitro SSR frontend under Supervi
 ```bash
 docker run -d \
   --name itdb \
+  --privileged \
   --restart unless-stopped \
   -p 80:80 \
   -e ITDB_JWT_SECRET=replace-with-a-long-random-string \

@@ -2,6 +2,7 @@ services:
   itdb:
     image: registry.cn-shenzhen.aliyuncs.com/zyx3721/itdb-new:latest
     container_name: itdb
+    privileged: true
     restart: unless-stopped
     networks:
       - itdb_network
