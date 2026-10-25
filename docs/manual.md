@@ -244,7 +244,7 @@ nohup npm run dev > itdb-frontend.log 2>&1 &
 
 ## 3.1 部署目录结构
 
-Docker Compose 部署相关文件统一放在 `deploy/` 目录下。`certflow` 单镜像内包含 Go 后端、Nginx 和前端 Nitro SSR 服务，并通过 Supervisor 管理多进程。
+Docker Compose 部署相关文件统一放在 `deploy/` 目录下。`itdb` 单镜像内包含 Go 后端、Nginx 和前端 Nitro SSR 服务，并通过 Supervisor 管理多进程。
 
 仓库内置文件结构：
 
@@ -569,7 +569,6 @@ nohup env HOST=127.0.0.1 PORT=5173 npm run start > itdb-frontend.log 2>&1 &
 ```
 
 SSR 拉取品牌配置的后端地址按以下顺序确定：运行时环境变量 `SSR_API_ORIGIN` → 入口文件 `index.mjs` 所在目录向上任意一层的 `.env` 文件（首个存在的生效，可与后端共用部署根目录的同一份 `.env`）→ 默认 `http://127.0.0.1:8080`（开发模式下会先回退到 `VITE_API_BASE_URL`，与 dev 代理同源）。请确保该地址对 SSR 进程可达，否则首屏会先显示默认品牌、加载后再切换为配置值，且 SSR 进程日志会输出 `[itdb-ssr] fetch brand failed` 警告。
-```
 
 ## 4.4 配置Nginx反向代理
 
@@ -586,7 +585,7 @@ SSR 拉取品牌配置的后端地址按以下顺序确定：运行时环境变�
 
 上传完成后，在 `.output` 所属的前端项目目录执行 `HOST=127.0.0.1 PORT=5173 npm run start` 启动前端服务。Nginx 的 `/` 请求应反向代理到该服务，例如下方示例中的 `127.0.0.1:5173`；`/api/` 和 `/swagger/` 仍反向代理到 Go 后端 `127.0.0.1:8080`。
 
-`/assets/` 下带扩展名的构建产物（JS/CSS/字体/图片等）可由 Nginx 直接读取 `.output/public` 返回，避免静态资源经过前端 SSR 服务，并可为带 hash 的构建资源启用长期缓存；`/favicon.svg` 同理。注意资产模块的页面路由同样位于 `/assets/` 前缀下（如 `/assets/software`），因此静态资源 location 必须按扩展名正则匹配，不能用 `^~ /assets/` 前缀匹配加 `=404`，否则这些页面的整页请求（新标签打开、刷新、直链）会被静态块拦截返回 404；也不要改用 `try_files $uri @ssr` 回退，该块的一年期强缓存响应头会同样作用于回退返回的 SSR 页面。`/crl/`、`/ocsp` 与 `/ocsp/` 必须直接反向代理到 Go 后端，保留原始路径、请求方法和 `Content-Type`，以支持 CRL 分发、RFC 6960 二进制请求及 JSON 状态查询。示例中的 `root /data/certflow/admin/.output/public;` 请按实际上传目录替换。
+`/assets/` 下带扩展名的构建产物（JS/CSS/字体/图片等）可由 Nginx 直接读取 `.output/public` 返回，避免静态资源经过前端 SSR 服务，并可为带 hash 的构建资源启用长期缓存；`/favicon.svg` 同理。注意资产模块的页面路由同样位于 `/assets/` 前缀下（如 `/assets/software`），因此静态资源 location 必须按扩展名正则匹配，不能用 `^~ /assets/` 前缀匹配加 `=404`，否则这些页面的整页请求（新标签打开、刷新、直链）会被静态块拦截返回 404；也不要改用 `try_files $uri @ssr` 回退，该块的一年期强缓存响应头会同样作用于回退返回的 SSR 页面。`/crl/`、`/ocsp` 与 `/ocsp/` 必须直接反向代理到 Go 后端，保留原始路径、请求方法和 `Content-Type`，以支持 CRL 分发、RFC 6960 二进制请求及 JSON 状态查询。示例中的 `root /data/itdb/admin/.output/public;` 请按实际上传目录替换。
 
 ### 4.4.1 HTTP 示例
 
@@ -702,7 +701,7 @@ server {
     
     # 前端静态构建资源：按扩展名匹配，/assets/ 下的页面路由不受影响
     location ~* ^/assets/.+\.(js|mjs|css|map|json|svg|png|jpe?g|gif|webp|ico|woff2?|ttf)$ {
-        root /data/certflow/admin/.output/public;
+        root /data/itdb/admin/.output/public;
         try_files $uri =404;
         access_log off;
         expires 1y;
@@ -711,7 +710,7 @@ server {
     
     # 站点图标
     location = /favicon.svg {
-        root /data/certflow/admin/.output/public;
+        root /data/itdb/admin/.output/public;
         try_files $uri =404;
         access_log off;
         expires 7d;
